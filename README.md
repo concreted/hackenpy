@@ -48,7 +48,7 @@ options
 Following options are available. Append them to the script run command (i.e. ``` python hacken.py -r```). 
 
 <pre>
--r				 Red goes first.
+-r				Red goes first.
 -board1			Play a sample game.
 </pre>
 
