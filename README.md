@@ -8,9 +8,9 @@ how to play
 
 Run ```python hacken.py```. 
 
-You will be prompted to setup the playing field. Type in ```n``` to place a node. ```b``` or ```r``` to place a blue or red edge. ```s``` to show the playing field. ```d``` to delete an edge or node.
+You will be prompted to setup the playing field. Type in ```n``` to place a node, ```b``` or ```r``` to place a blue or red edge, ```s``` to show the playing field, or ```d``` to delete an edge or node.
 
-When placing an edge, you will be asked which two nodes to connect. To connect to the ground, specify ```0```.
+When placing an edge, you will be asked which two nodes to connect. To connect to the ground, specify node ```0```.
 
 When finished placing edges, type in ```f``` to start playing. 
 
