@@ -69,9 +69,13 @@ class Hackenbush:
 					if next != last[0]:
 						print 
 						sys.stdout.write("|")
-						sys.stdout.write("               " * level + "---- " + label + " ---- " + v + " ")
+						sys.stdout.write("             " * level)
+						if level == 0:
+							sys.stdout.write("____" + label + "____(" + v + ")")
+						else:
+							sys.stdout.write("\___" + label + "____(" + v + ")")
 					else:
-						sys.stdout.write("---- " + label + " ---- " + v + " ")
+						sys.stdout.write("____" + label + "____(" + v + ")")
 					last[0] = v
 					recurse(v, level+1)
 				#if next == vertex:
@@ -127,7 +131,6 @@ class Hackenbush:
 			elif entry != 'x':
 				entry = None
 					
-					
 	def play(self, first='blue'):
 		
 		if self.inPlay() == []:
@@ -153,7 +156,6 @@ class Hackenbush:
 				player = 'red'
 			else:
 				player = 'blue'
-			
 
 			print
 			self.display()
@@ -178,16 +180,24 @@ def main():
 		test.addRed(3,2)
 		test.addNode()
 		test.addBlue(4,2)
-		
 		test.addNode()
 		test.addRed(0, 5)
 		test.addNode()
 		test.addBlue(6,5)
+	elif '-board2' in sys.argv:
+		test.addNode()
+		test.addRed(0,1)
+		test.addNode()
+		test.addRed(1,1)
+		test.addRed(1,2)
+		test.addBlue(1,2)
+		test.addBlue(2,0)
 	else:
 		test.setup()
 	if '-r' in sys.argv:
 		player = 'red'
 
 	test.play(player)
+
 main()
 	
