@@ -8,18 +8,19 @@ how to play
 
 Run ```python hacken.py```. 
 
-You will be prompted to setup the playing field. Type in ```b``` or ```r``` to place a blue or red edge. 
+You will be prompted to setup the playing field. Type in ```n``` to place a node. ```b``` or ```r``` to place a blue or red edge. ```s``` to show the playing field. ```d``` to delete an edge or node.
 
-Edges are automatically numbered (i.e. b1, b2, r1, r2).
+When placing an edge, you will be asked which two nodes to connect. To connect to the ground, specify ```0```.
 
-If there are one or more edges already placed, you will be asked which edge to connect to the new one. If you don't specify, the new edge will be connected to the ground.
+When finished placing edges, type in ```f``` to start playing. 
 
-When finished placing edges, type in ```x``` to start playing. 
-
-The playing field is represented as below:
+The playing field is represented as below. Blue and red edges are numbered ```b1, b2, r1, r2```. Nodes are numbered ```(1), (2), (3)```.
 <pre>
-| ---- b1 b1 ---- r1 r1 ---- r2 r1 ---- b2
-| ---- r3 r3 ---- b3
+|
+|____b1____(1)____r1____(2)____b2____(4)
+|                          \___r2____(3)
+|____r3____(5)____b3____(6)
+|
 </pre>
 
 This is equivalent to:
@@ -36,9 +37,9 @@ This is equivalent to:
 -----------------
 </pre>
 
-On each player's turn, the game shows a list of their available edges. Enter the edge name to remove it and all edges "above" it. 
+On each player's turn, the game shows a list of their available edges. Type in an edge name to remove it. If one or more edges becomes disconnected from the ground, they are removed from play. ```s``` shows the playing field.
 
-By default blue goes first. Run with ```-r``` to start with Red (see Options).
+By default blue goes first. Run with ```-r``` to start with red (see Options).
 
 Whichever player runs out of available edges loses.
 
@@ -49,7 +50,12 @@ Following options are available. Append them to the script run command (i.e. ```
 
 <pre>
 -r				Red goes first.
--board1			Play a sample game.
+-nv				Less verbose instructions.
+-d				Show debug information.
+-game1			Play sample game 1.
+-game2			Play sample game 2.
+-game3			Play sample game 3.
+-s				Use with -game option to edit the game.
 </pre>
 
 how it works
@@ -66,8 +72,7 @@ When an edge is removed, the ```displayFromVertex``` function figures out how to
 to do
 -----
 
-- [ ] Testing - any bugs?
-- [ ] Better visual representation
-- [ ] Streamline the graph representation
-    - [ ] Get rid of Vertex class (not needed)
-	- [ ] Allow Graph direct indexing (```Graph[x]```)
+- [ ] Bug testing
+- [x] Better visual representation
+- [x] Streamline the graph representation
+    - [x] Get rid of Vertex class (not needed)

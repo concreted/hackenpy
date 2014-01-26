@@ -1,10 +1,5 @@
 import sys
 		
-class Vertex:
-	def __init__(self, label):
-		self.label = str(label)
-		self.connections = []
-		
 class Graph:
 	def __init__(self):
 		self.V = {}
@@ -17,7 +12,7 @@ class Graph:
 		v = [str(n) for n in v]
 		self.E[label] = (v[0], v[1])
 		self.V[v[0]][label] = v[1] 
-	
+		self.V[v[1]][label] = v[0] 
 class Hackenbush:
 	def __init__(self):
 		self.Field = Graph()
@@ -47,8 +42,10 @@ class Hackenbush:
 		out = "".join(out)
 		if self.debug:
 			print out
-	def inPlay(self):
-		return [e for e in self.Field.E]
+	def allEdges(self):
+		edges = [e for e in self.Field.E]
+		edges.sort()
+		return edges
 	def allNodes(self):
 		nodes = [v for v in self.Field.V]
 		nodes.sort()
@@ -144,9 +141,11 @@ class Hackenbush:
 	def setup(self):
 		self.printVerbose("Setup the playing field.", "Setup.")
 		entry = None
-		while entry != "x":
+		while entry != "f":
 			self.display()
-			self.printVerbose("(n)ode or (b)lue edge or (r)ed edge? (d) to display. (p) to delete node. (x) to finish.", "(n)ode (b)lue (r)ed (d)isplay (p)op node (x) finish")
+			print "Nodes: " + str(self.allNodes())
+			print
+			self.printVerbose("Add (n)ode or (b)lue edge or (r)ed edge? Or (s)how the playing field, (d)elete an edge or node, or (f)inish.", "(n)ode (b)lue (r)ed (s)how (d)elete (f)inish")
 			entry = raw_input()
 			if entry == 'n':
 				self.addNode()
@@ -166,44 +165,61 @@ class Hackenbush:
 					v2 = raw_input()
 					if v2 not in self.allNodes():
 						v2 = None
-						
 				if entry == 'b':
 					self.addBlue(v1, v2)
 				else:
 					self.addRed(v1, v2)
-				
 				print
 				#self.display()
-			elif entry == 'd':
+			elif entry == 's':
 				self.display()
-			elif entry == 'p':
-				v = None
-				while v == None:
-					print "Select a node."
-					print [v for v in self.Field.V]
-					v = raw_input()
-					if v not in self.Field.V:
+			elif entry == 'd':
+				select = None
+				while select == None:
+					self.printVerbose("Delete an (e)dge or (n)ode?", "(e)dge (n)ode")
+					select = raw_input()
+					if select == 'n':
 						v = None
-				self.removeVertex(v)
-			elif entry != 'x':
+						while v == None:
+							print "Select a node."
+							print self.allNodes()
+							v = raw_input()
+							if v not in self.Field.V:
+								v = None
+						self.removeVertex(v)
+					elif select == 'e':
+						e = None
+						while e == None:
+							print "Select an edge."
+							print self.allEdges()
+							e = raw_input()
+							if e not in self.Field.E:
+								e = None
+						self.removeEdge(e)
+					else:
+						select = None
+			elif entry != 'f':
 				entry = None
 					
 	def play(self, first='blue'):
-		if self.inPlay() == []:
+		self.printVerbose("Play Hackenbush.", "Play.")
+		if self.allEdges() == []:
 			print "Nothing in play."
 			return
 		last = None
 		player = first
-		playerMoves = [v for v in self.inPlay() if v[0] == player[0]]
-		
+		playerMoves = [v for v in self.allEdges() if v[0] == player[0]]
+		self.display()
 		while playerMoves != []:
-			self.display()
 			next = " "
 			while next not in playerMoves:
 				self.printVerbose(player[0].upper() + player[1:] + "'s turn", None)
 				self.printVerbose("Remove which edge?", "Remove:")
 				print playerMoves
 				next = raw_input()
+				if next == 's':
+					self.display()
+					next = " "
 			self.removeEdge(next)
 			last = next
 
@@ -211,8 +227,8 @@ class Hackenbush:
 				player = 'red'
 			else:
 				player = 'blue'
-
-			playerMoves = [v for v in self.inPlay() if v[0] == player[0]]
+			self.display()
+			playerMoves = [v for v in self.allEdges() if v[0] == player[0]]
 		print
 		if last[0] == 'b':
 			print "Blue wins!"
@@ -222,7 +238,7 @@ class Hackenbush:
 def main():
 	test = Hackenbush()
 	player = 'blue'
-	if '-board1' in sys.argv:
+	if '-game1' in sys.argv:
 		test.addNode()
 		test.addBlue(0,1)
 		test.addNode()
@@ -235,9 +251,8 @@ def main():
 		test.addRed(0, 5)
 		test.addNode()
 		test.addBlue(5,6)
-		test.addBlue(5,0)
 		test.addRed(0,2)
-	elif '-board2' in sys.argv:
+	elif '-game2' in sys.argv:
 		test.addNode()
 		test.addRed(0,1)
 		test.addNode()
@@ -245,7 +260,7 @@ def main():
 		test.addRed(1,2)
 		test.addBlue(1,2)
 		test.addBlue(2,0)
-	elif '-girl' in sys.argv:
+	elif '-game3' in sys.argv:
 		test.addNode()
 		test.addNode()
 		test.addBlue(0,2)
